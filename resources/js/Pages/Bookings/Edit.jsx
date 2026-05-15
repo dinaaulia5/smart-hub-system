@@ -8,19 +8,68 @@ import { Label } from "@/Components/ui/label";
 import AppLayout from "@/Layouts/AppLayout";
 import { flashMessage } from "@/lib/utils";
 import { Link, useForm } from "@inertiajs/react";
-import { IconArrowBack, IconCheck, IconTool } from "@tabler/icons-react";
+import {
+    IconArrowBack,
+    IconCalendarEvent,
+    IconCheck,
+    IconPlus,
+    IconTrash,
+} from "@tabler/icons-react";
 import { toast } from "sonner";
 
 const Edit = (props) => {
+    const booking = props.booking;
+
     const { data, setData, errors, post, processing, reset } = useForm({
-        name: props.equipment.name ?? "",
-        brand: props.equipment.brand ?? "",
-        stock: props.equipment.stock ?? 0,
-        status: props.equipment.status ?? "available",
+        user_id: booking?.user_id ?? "",
+        start_time: booking?.start_time ?? "",
+        end_time: booking?.end_time ?? "",
+        items: booking?.items ?? [
+            {
+                type: "room",
+                id: "",
+                quantity: 1,
+            },
+        ],
         _method: props.pageSettings.method,
     });
 
-    const onHandleChange = (e) => setData(e.target.name, e.target.value);
+    const onHandleChange = (e) => {
+        setData(e.target.name, e.target.value);
+    };
+
+    const updateItem = (index, field, value) => {
+        const updatedItems = [...data.items];
+
+        updatedItems[index][field] = value;
+
+        if (field === "type") {
+            updatedItems[index].id = "";
+            updatedItems[index].quantity = 1;
+        }
+
+        setData("items", updatedItems);
+    };
+
+    const addItem = () => {
+        setData("items", [
+            ...data.items,
+            {
+                type: "room",
+                id: "",
+                quantity: 1,
+            },
+        ]);
+    };
+
+    const removeItem = (index) => {
+        const updatedItems = data.items.filter((_, i) => i !== index);
+        setData("items", updatedItems);
+    };
+
+    const getOptions = (type) => {
+        return type === "room" ? props.rooms : props.equipments;
+    };
 
     const onHandleSubmit = (e) => {
         e.preventDefault();
@@ -48,11 +97,11 @@ const Edit = (props) => {
                         <HeaderTitle
                             title={props.pageSettings.title}
                             subTitle={props.pageSettings.subtitle}
-                            icon={IconTool}
+                            icon={IconCalendarEvent}
                         />
 
                         <Button variant="emerald" size="xl" asChild>
-                            <Link href={route("equipment.index")}>
+                            <Link href={route("booking.index")}>
                                 <IconArrowBack className="size-4" />
                                 Kembali
                             </Link>
@@ -61,83 +110,182 @@ const Edit = (props) => {
                 </CardHeader>
 
                 <CardContent>
-                    <form className="space-y-4" onSubmit={onHandleSubmit}>
-                        {/* NAME */}
+                    <form className="space-y-5" onSubmit={onHandleSubmit}>
+                        {/* USER */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="name">Nama Equipment</Label>
-
-                            <Input
-                                type="text"
-                                name="name"
-                                id="name"
-                                placeholder="Masukan nama equipment"
-                                value={data.name}
-                                onChange={onHandleChange}
-                            />
-
-                            {errors.name && (
-                                <InputError message={errors.name} />
-                            )}
-                        </div>
-
-                        {/* BRAND */}
-                        <div className="flex flex-col gap-2">
-                            <Label htmlFor="brand">Brand</Label>
-
-                            <Input
-                                type="text"
-                                name="brand"
-                                id="brand"
-                                placeholder="Masukan brand"
-                                value={data.brand}
-                                onChange={onHandleChange}
-                            />
-
-                            {errors.brand && (
-                                <InputError message={errors.brand} />
-                            )}
-                        </div>
-
-                        {/* STOCK */}
-                        <div className="flex flex-col gap-2">
-                            <Label htmlFor="stock">Stock</Label>
-
-                            <Input
-                                type="number"
-                                name="stock"
-                                id="stock"
-                                placeholder="Masukan stock"
-                                value={data.stock}
-                                onChange={onHandleChange}
-                                min="0"
-                            />
-
-                            {errors.stock && (
-                                <InputError message={errors.stock} />
-                            )}
-                        </div>
-
-                        {/* STATUS */}
-                        <div className="flex flex-col gap-2">
-                            <Label htmlFor="status">Status</Label>
+                            <Label htmlFor="user_id">Pengguna</Label>
 
                             <select
-                                name="status"
-                                id="status"
-                                value={data.status}
+                                name="user_id"
+                                id="user_id"
+                                value={data.user_id}
                                 onChange={onHandleChange}
                                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                             >
-                                {props.statuses.map((status, index) => (
-                                    <option key={index} value={status.value}>
-                                        {status.label}
+                                <option value="">Pilih pengguna</option>
+                                {props.users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.name} - {user.email}
                                     </option>
                                 ))}
                             </select>
 
-                            {errors.status && (
-                                <InputError message={errors.status} />
+                            {errors.user_id && (
+                                <InputError message={errors.user_id} />
                             )}
+                        </div>
+
+                        {/* START TIME */}
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="start_time">Waktu Mulai</Label>
+
+                            <Input
+                                type="datetime-local"
+                                name="start_time"
+                                id="start_time"
+                                value={data.start_time}
+                                onChange={onHandleChange}
+                            />
+
+                            {errors.start_time && (
+                                <InputError message={errors.start_time} />
+                            )}
+                        </div>
+
+                        {/* END TIME */}
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="end_time">Waktu Selesai</Label>
+
+                            <Input
+                                type="datetime-local"
+                                name="end_time"
+                                id="end_time"
+                                value={data.end_time}
+                                onChange={onHandleChange}
+                            />
+
+                            {errors.end_time && (
+                                <InputError message={errors.end_time} />
+                            )}
+                        </div>
+
+                        {/* ITEMS */}
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <Label>Item Booking</Label>
+
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={addItem}
+                                >
+                                    <IconPlus className="size-4" />
+                                    Tambah Item
+                                </Button>
+                            </div>
+
+                            {data.items.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="grid gap-3 rounded-xl border p-4 lg:grid-cols-4"
+                                >
+                                    <div className="flex flex-col gap-2">
+                                        <Label>Jenis</Label>
+
+                                        <select
+                                            value={item.type}
+                                            onChange={(e) =>
+                                                updateItem(
+                                                    index,
+                                                    "type",
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                                        >
+                                            <option value="room">Room</option>
+                                            <option value="equipment">
+                                                Equipment
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div className="flex flex-col gap-2 lg:col-span-2">
+                                        <Label>Item</Label>
+
+                                        <select
+                                            value={item.id}
+                                            onChange={(e) =>
+                                                updateItem(
+                                                    index,
+                                                    "id",
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                                        >
+                                            <option value="">Pilih item</option>
+
+                                            {getOptions(item.type).map(
+                                                (option) => (
+                                                    <option
+                                                        key={option.id}
+                                                        value={option.id}
+                                                    >
+                                                        {item.type === "room"
+                                                            ? `${option.name} - ${option.code}`
+                                                            : `${option.name} - ${option.brand} (stok: ${option.stock})`}
+                                                    </option>
+                                                ),
+                                            )}
+                                        </select>
+                                    </div>
+
+                                    <div className="flex flex-col gap-2">
+                                        <Label>Quantity</Label>
+
+                                        <div className="flex gap-2">
+                                            <Input
+                                                type="number"
+                                                min="1"
+                                                value={item.quantity}
+                                                disabled={item.type === "room"}
+                                                onChange={(e) =>
+                                                    updateItem(
+                                                        index,
+                                                        "quantity",
+                                                        e.target.value,
+                                                    )
+                                                }
+                                            />
+
+                                            {data.items.length > 1 && (
+                                                <Button
+                                                    type="button"
+                                                    variant="red"
+                                                    size="icon"
+                                                    onClick={() =>
+                                                        removeItem(index)
+                                                    }
+                                                >
+                                                    <IconTrash className="size-4" />
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {errors[`items.${index}.id`] && (
+                                        <div className="lg:col-span-4">
+                                            <InputError
+                                                message={
+                                                    errors[`items.${index}.id`]
+                                                }
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
 
                         <div className="mt-8 flex flex-col gap-2 lg:flex-row lg:justify-end">
@@ -168,7 +316,7 @@ const Edit = (props) => {
 };
 
 Edit.layout = (page) => (
-    <AppLayout children={page} title={page.props.pageSettings.title} />
+    <AppLayout title={page.props.pageSettings.title} children={page} />
 );
 
 export default Edit;
