@@ -15,7 +15,8 @@ Route::prefix('v1/main')->group(function () {
 
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+
         Route::apiResource('equipment', EquipmentController::class)
             ->names('api.equipment');
 
@@ -26,5 +27,22 @@ Route::prefix('v1/main')->group(function () {
             ->names('api.booking');
     });
 
-    Route::middleware('auth:sanctum')->post('/booking/{id}/check-in', [BookingController::class, 'checkIn']);
+
+    Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
+        // EQUIPMENT
+        Route::get('equipment', [EquipmentController::class, 'index']);
+        Route::get('equipment/{equipment}', [EquipmentController::class, 'show']);
+
+        // ROOM
+        Route::get('room', [RoomController::class, 'index']);
+        Route::get('room/{room}', [RoomController::class, 'show']);
+
+        // BOOKING
+        Route::get('booking', [BookingController::class, 'index']);
+        Route::get('booking/{booking}', [BookingController::class, 'show']);
+        Route::post('booking', [BookingController::class, 'store']);
+
+        // CHECK IN
+        Route::post('/booking/{id}/check-in', [BookingController::class, 'checkIn']);
+    });
 });
