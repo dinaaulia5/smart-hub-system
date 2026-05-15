@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Equipment;
-use App\Models\Room;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,9 +21,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Relation::morphMap([
-            'room' => Room::class,
-            'equipment' => Equipment::class
-        ]);
+        Vite::prefetch(concurrency: 3);
+        JsonResource::withoutWrapping();
+        // Load helpers.php
+        require_once app_path('Helpers/helpers.php');
     }
 }

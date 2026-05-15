@@ -16,9 +16,14 @@ Route::prefix('v1/main')->group(function () {
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('equipment', EquipmentController::class);
-        Route::apiResource('room', RoomController::class);
-        Route::apiResource('booking', BookingController::class);
+        Route::apiResource('equipment', EquipmentController::class)
+            ->names('api.equipment');
+
+        Route::apiResource('room', RoomController::class)
+            ->names('api.room');
+
+        Route::apiResource('booking', BookingController::class)
+            ->names('api.booking');
     });
 
     Route::middleware('auth:sanctum')->post('/booking/{id}/check-in', [BookingController::class, 'checkIn']);
