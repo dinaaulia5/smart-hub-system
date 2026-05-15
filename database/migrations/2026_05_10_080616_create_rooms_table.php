@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('code');
             $table->smallInteger('capacity');
             $table->string('location');
-            $table->enum('status', ['available', 'maintenance'])->default('available');
+            $table->enum('status', ['available', 'not_available'])->default('available');
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->timestamp('check_in_at')->nullable();
-            $table->enum('status', ['pending', 'active', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'active', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }
