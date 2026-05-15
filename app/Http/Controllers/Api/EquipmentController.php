@@ -39,7 +39,7 @@ class EquipmentController extends Controller
                     'success' => false,
                     'message' => 'Data equipment tidak ditemukan',
                     'data' => []
-                ], 404);
+                ], Response::HTTP_NOT_FOUND);
             }
 
             return response()->json([
@@ -52,7 +52,7 @@ class EquipmentController extends Controller
                 'success' => false,
                 'message' => 'Gagal mengambil data equipment',
                 'error' => config('app.debug') ? $e->getMessage() : null
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\EquipmentController;
+use App\Http\Controllers\Api\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,4 +11,5 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('v1/main')->group(function () {
     Route::apiResource('equipment', EquipmentController::class);
+    Route::apiResource('room', RoomController::class);
 });
