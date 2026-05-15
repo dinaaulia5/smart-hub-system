@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ActivityLogger;
 use App\Http\Requests\RoomRequest;
 use App\Http\Resources\RoomResource;
 use App\Models\Room;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 use Throwable;
 
@@ -109,7 +111,12 @@ class RoomController extends Controller
     public function store(RoomRequest $request): RedirectResponse
     {
         try {
-            Room::create($request->validated());
+            $room = Room::create($request->validated());
+
+            ActivityLogger::log(
+                Auth::user()->name . ' Created room data',
+                $room
+            );
 
             return to_route('room.index')
                 ->with('success', 'Ruangan berhasil ditambahkan');
@@ -163,6 +170,10 @@ class RoomController extends Controller
         try {
             $room->update($request->validated());
 
+            ActivityLogger::log(
+                Auth::user()->name . ' updated room data',
+                $room
+            );
             return to_route('room.index')
                 ->with('success', 'Ruangan berhasil diperbarui');
         } catch (Throwable $e) {
@@ -175,6 +186,11 @@ class RoomController extends Controller
     {
         try {
             $room->delete();
+
+            ActivityLogger::log(
+                Auth::user()->name . ' deleted room data',
+                $room
+            );
 
             return to_route('room.index')
                 ->with('success', 'Ruangan berhasil dihapus');

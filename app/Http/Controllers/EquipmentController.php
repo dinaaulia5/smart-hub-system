@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\MessageType;
+use App\Helpers\ActivityLogger;
 use App\Http\Requests\EquipmentRequest;
 use App\Http\Resources\EquipmentResource;
 use App\Models\Equipment;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 use Throwable;
 
@@ -70,7 +72,6 @@ class EquipmentController extends Controller
         ]);
     }
 
-
     public function create(): Response
     {
         return inertia('Equipments/Create', [
@@ -111,14 +112,15 @@ class EquipmentController extends Controller
             ],
         ]);
     }
-
-
-
-
     public function store(EquipmentRequest $request)
     {
         try {
-            Equipment::create($request->validated());
+            $equipment = Equipment::create($request->validated());
+
+            ActivityLogger::log(
+                Auth::user()->name . ' Creted equipment data',
+                $equipment
+            );
 
             return redirect()->route('equipment.index')
                 ->with('success', 'Data berhasil ditambahkan');
@@ -126,13 +128,10 @@ class EquipmentController extends Controller
             return back()->with('error', 'Gagal menambahkan data');
         }
     }
-
-
     public function show(Equipment $equipment)
     {
         //
     }
-
 
     public function edit(Equipment $equipment): Response
     {
@@ -176,7 +175,6 @@ class EquipmentController extends Controller
             ],
         ]);
     }
-
     public function update(Equipment $equipment, EquipmentRequest $request): RedirectResponse
     {
         try {
@@ -188,6 +186,12 @@ class EquipmentController extends Controller
             ]);
 
             flashMessage(MessageType::UPDATED->message('Equipment'));
+
+            ActivityLogger::log(
+                Auth::user()->name . ' updated room data',
+                $equipment
+            );
+
 
             return to_route('equipment.index');
         } catch (Throwable $e) {
@@ -205,6 +209,12 @@ class EquipmentController extends Controller
     {
         try {
             $equipment->delete();
+
+            ActivityLogger::log(
+                Auth::user()->name . ' delete equipment data',
+                $equipment
+            );
+
 
             return redirect()->route('equipment.index')
                 ->with('success', 'Data berhasil dihapus');

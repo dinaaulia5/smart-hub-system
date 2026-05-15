@@ -88,10 +88,16 @@ class BookingController extends Controller
     {
         return DB::transaction(function () use ($id) {
 
-            $booking = Booking::with('items.bookable')->findOrFail($id);
+            $booking = Booking::with('items.bookable')
+                ->findOrFail($id);
 
             $now = Carbon::now('Asia/Jakarta');
-            $startTime = Carbon::parse($booking->start_time, 'Asia/Jakarta');
+            $startTime = Carbon::createFromFormat(
+                'Y-m-d H:i:s',
+                $booking->getRawOriginal('start_time'),
+                'Asia/Jakarta'
+            );
+
             $deadline = $startTime->copy()->addMinutes(15);
 
             if ($now->lt($startTime)) {
@@ -99,8 +105,11 @@ class BookingController extends Controller
                     'success' => false,
                     'message' => 'Belum waktunya check-in',
                     'debug' => [
-                        'now' => $now,
-                        'start_time' => $startTime
+                        'booking_id' => $booking->id,
+                        'db_start_time_raw' => $booking->getRawOriginal('start_time'),
+                        'now' => $now->format('Y-m-d H:i:s'),
+                        'start_time' => $startTime->format('Y-m-d H:i:s'),
+                        'deadline' => $deadline->format('Y-m-d H:i:s'),
                     ]
                 ], 422);
             }
@@ -112,8 +121,11 @@ class BookingController extends Controller
                     'success' => false,
                     'message' => 'Terlambat lebih dari 15 menit, booking dibatalkan',
                     'debug' => [
-                        'now' => $now,
-                        'deadline' => $deadline
+                        'booking_id' => $booking->id,
+                        'db_start_time_raw' => $booking->getRawOriginal('start_time'),
+                        'now' => $now->format('Y-m-d H:i:s'),
+                        'start_time' => $startTime->format('Y-m-d H:i:s'),
+                        'deadline' => $deadline->format('Y-m-d H:i:s'),
                     ]
                 ], 422);
             }
@@ -121,16 +133,20 @@ class BookingController extends Controller
             if ($booking->status !== 'pending') {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Status booking tidak valid untuk check-in'
+                    'message' => 'Status booking tidak valid untuk check-in',
+                    'debug' => [
+                        'booking_id' => $booking->id,
+                        'status' => $booking->status,
+                    ]
                 ], 400);
             }
 
             $booking->update([
                 'status' => 'active',
-                'check_in_at' => $now
+                'check_in_at' => $now->format('Y-m-d H:i:s'),
             ]);
 
-            ActivityLogger::log("User check-in berhasil", $booking);
+            ActivityLogger::log('User berhasil melakukan check-in booking', $booking);
 
             return response()->json([
                 'success' => true,
