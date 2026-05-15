@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('booking_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('booking_id')->constrained()->onDelete('cascade');
-            $table->morphs('bookable');
+            $table->uuid('bookable_id');
+            $table->string('bookable_type');
             $table->integer('quantity')->default(1);
             $table->timestamps();
         });
