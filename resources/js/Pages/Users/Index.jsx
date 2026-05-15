@@ -26,12 +26,10 @@ import {
 
 import UseFilter from "@/Hooks/UseFilter";
 import AppLayout from "@/Layouts/AppLayout";
-
 import { formatDateIndo } from "@/lib/utils";
-
-import { IconArrowsDownUp, IconUsers } from "@tabler/icons-react";
-
+import { IconArrowsDownUp, IconPlus, IconUsers } from "@tabler/icons-react";
 import { useState } from "react";
+import { Link } from "@inertiajs/react";
 
 export default function Index(props) {
     const { data: users, meta, links } = props.users;
@@ -95,6 +93,12 @@ export default function Index(props) {
                             subTitle={props.pageSettings.subtitle}
                             icon={IconUsers}
                         />
+                        <Button variant="emerald" size="xl" asChild>
+                            <Link href={route("user.create")}>
+                                <IconPlus className="size-4" />
+                                Tambah
+                            </Link>
+                        </Button>
                     </div>
 
                     <Filter params={params} setParams={setParams} />
