@@ -14,7 +14,7 @@ class Equipment extends Model
     protected $fillable = ['name', 'brand', 'stock'];
     protected $table = 'equipments';
 
-    public function bookings()
+    public function bookingItems()
     {
         return $this->morphMany(BookingItem::class, 'bookable');
     }

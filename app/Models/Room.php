@@ -11,7 +11,7 @@ class Room extends Model
 
     protected $fillable = ['name', 'code', 'capacity', 'location', 'status'];
 
-    public function bookings()
+    public function bookingItems()
     {
         return $this->morphMany(BookingItem::class, 'bookable');
     }
