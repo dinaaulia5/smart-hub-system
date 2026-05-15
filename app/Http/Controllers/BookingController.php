@@ -2,64 +2,88 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookingResource;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Inertia\Response;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        //
-    }
+        $bookings = Booking::query()
+            ->with([
+                'user:id,name',
+                'items.bookable',
+            ])
+            ->select([
+                'id',
+                'user_id',
+                'start_time',
+                'end_time',
+                'check_in_at',
+                'status',
+                'created_at',
+            ])
+            ->filter(request()->only([
+                'search',
+                'status',
+            ]))
+            ->sorting(request()->only([
+                'field',
+                'direction',
+            ]))
+            ->latest()
+            ->paginate(request()->load ?? 10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        return inertia('Bookings/Index', [
+            'pageSettings' => fn() => [
+                'title' => 'Data Booking',
+                'subtitle' => 'Kelola data peminjaman ruangan dan peralatan',
+                'banner' => [
+                    'title' => 'Booking',
+                    'subtitle' => 'Pantau jadwal peminjaman dan status check-in',
+                ],
+            ],
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            'bookings' => fn() => BookingResource::collection($bookings)->additional([
+                'meta' => [
+                    'has_pages' => $bookings->hasPages(),
+                ],
+            ]),
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Booking $booking)
-    {
-        //
-    }
+            'state' => fn() => [
+                'page' => request()->page ?? 1,
+                'search' => request()->search ?? '',
+                'status' => request()->status ?? '',
+                'load' => request()->load ?? 10,
+            ],
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Booking $booking)
-    {
-        //
-    }
+            'items' => fn() => [
+                [
+                    'label' => 'Smart Hub',
+                    'href' => route('dashboard'),
+                ],
+                [
+                    'label' => 'Booking',
+                ],
+            ],
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Booking $booking)
-    {
-        //
-    }
+            'count' => fn() => [
+                'countBooking' => Booking::query()->count(),
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Booking $booking)
-    {
-        //
+                'countPending' => Booking::query()
+                    ->where('status', 'pending')
+                    ->count(),
+
+                'countApproved' => Booking::query()
+                    ->where('status', 'approved')
+                    ->count(),
+
+                'countCheckIn' => Booking::query()
+                    ->whereNotNull('check_in_at')
+                    ->count(),
+            ],
+        ]);
     }
 }

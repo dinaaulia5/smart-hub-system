@@ -1,0 +1,35 @@
+[
+    {
+        TYPE: "E",
+        ID: "00",
+        NUMBER: 1,
+        MESSAGE: "Business Area harus dimasukkan pada transaksi code 6700070",
+        LOG_NO: "",
+        LOG_MSG_NO: 0,
+        MESSAGE_V1: "Business Area harus dimasukkan pada transaksi code",
+        MESSAGE_V2: "",
+        MESSAGE_V3: "",
+        MESSAGE_V4: "",
+        PARAMETER: "",
+        ROW: 0,
+        FIELD: "",
+        SYSTEM: "",
+    },
+][
+    {
+        TYPE: "E",
+        ID: "00",
+        NUMBER: 1,
+        MESSAGE: "Business Area harus dimasukkan pada transaksi code 6700070",
+        LOG_NO: "",
+        LOG_MSG_NO: 0,
+        MESSAGE_V1: "Business Area harus dimasukkan pada transaksi code",
+        MESSAGE_V2: "",
+        MESSAGE_V3: "",
+        MESSAGE_V4: "",
+        PARAMETER: "",
+        ROW: 0,
+        FIELD: "",
+        SYSTEM: "",
+    }
+];

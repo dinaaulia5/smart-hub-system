@@ -2,18 +2,7 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import { Card, CardContent } from "@/Components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import NavLink from "@/Components/NavLink";
-import {
-    IconBox,
-    IconCalendarEvent,
-    IconChartArrowsVertical,
-    IconCreditCardPay,
-    IconDoorEnter,
-    IconDoorExit,
-    IconLogout2,
-    IconLogs,
-    IconMenorah,
-    IconMoneybag,
-} from "@tabler/icons-react";
+import { IconCreditCardPay, IconMoneybag } from "@tabler/icons-react";
 
 const Sidebar = ({ auth, url }) => {
     return (
@@ -44,9 +33,9 @@ const Sidebar = ({ auth, url }) => {
                 </div>
                 <NavLink
                     title="Dashboard"
-                    url="#"
+                    url={route("dashboard")}
                     active={url.startsWith("/dashboard")}
-                    icon={IconBox}
+                    icon={IconMoneybag}
                 />
 
                 {/* MASTER */}
@@ -55,9 +44,9 @@ const Sidebar = ({ auth, url }) => {
                 </div>
                 <NavLink
                     title="Pengguna"
-                    url="#"
-                    active={url.startsWith("/payments")}
-                    icon={IconCreditCardPay}
+                    url={route("user.index")}
+                    active={url.startsWith("/user")}
+                    icon={IconMoneybag}
                 />
                 <NavLink
                     title="Data Peralatan Studio"
@@ -78,9 +67,9 @@ const Sidebar = ({ auth, url }) => {
                 </div>
                 <NavLink
                     title="Data Peminjaman"
-                    url="#"
-                    active={url.startsWith("/payments")}
-                    icon={IconCreditCardPay}
+                    url={route("booking.index")}
+                    active={url.startsWith("/booking")}
+                    icon={IconMoneybag}
                 />
             </ul>
         </nav>
