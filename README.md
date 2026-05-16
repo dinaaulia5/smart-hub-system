@@ -1,58 +1,289 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Smart Hub Management System
 
-## About Laravel
+Smart Hub Management System adalah aplikasi berbasis Laravel untuk mengelola peminjaman ruang kerja dan inventaris studio secara mandiri.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+</div>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 📖 Deskripsi Project
 
-## Learning Laravel
+Smart Hub Management System digunakan untuk membantu proses pengelolaan ruang kerja dan peralatan studio secara terintegrasi. Sistem mendukung dua jenis pengguna:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Admin** → Mengelola data melalui dashboard web
+- **User** → Mengakses data dan melakukan peminjaman melalui API
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Fitur utama sistem meliputi:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Monitoring booking
+- Check-in booking
+- Activity log
+- Autentikasi API
+- Manajemen inventaris
+- Role Based Access Control (RBAC)
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🛠 Teknologi Yang Digunakan
 
-```bash
-composer require laravel/boost --dev
+### Backend
 
-php artisan boost:install
+- Laravel 13
+- Laravel Sanctum
+- Laravel Breeze
+- MySQL
+
+### Frontend
+
+- React JS
+- Inertia JS
+- Tailwind CSS
+- Shadcn UI
+- Tabler Icons
+
+### Tools
+
+- Git
+- Postman
+- Laragon
+
+---
+
+## ✨ Fitur Utama
+
+### Dashboard
+
+- Statistik User
+- Statistik Booking
+- Statistik Ruangan
+- Statistik Equipment
+- Activity Log
+
+### User Management
+
+- Tambah User
+- Edit User
+- Hapus User
+
+### Room Management
+
+- CRUD Ruangan
+
+### Equipment Management
+
+- CRUD Peralatan Studio
+
+### Booking Management
+
+- Booking Ruangan
+- Booking Equipment
+- Check-in Booking
+
+Status Booking:
+
+- Pending
+- Active
+- Rejected
+
+### Activity Log
+
+- Riwayat aktivitas pengguna
+- Browser detection
+- Operating System detection
+- IP Address tracking
+
+### Authentication
+
+- Laravel Sanctum API
+- Role Based Access Control (RBAC)
+
+Role:
+
+- Admin
+- User
+
+---
+
+## 🗄 Database Schema
+
+### Tabel Utama
+
+- users
+- rooms
+- equipments
+- bookings
+- booking_items
+- activity_logs
+
+---
+
+## 📷 Screenshot Aplikasi
+
+### Dashboard
+
+Drive Screenshot:
+
+https://drive.google.com/drive/folders/1pcY6WX1cD4vD3PhLedfzv3I8yz3s3qDo?hl=ID
+
+Atau simpan screenshot lokal:
+
+```text
+docs/screenshots/
+├── dashboard.png
+├── users.png
+├── room.png
+├── equipment.png
+├── booking.png
+├── activity-log.png
+└── erd.png
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Contoh:
 
-## Contributing
+```md
+### Dashboard
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+![Dashboard](docs/screenshots/dashboard.png)
 
-## Code of Conduct
+### Data Pengguna
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+![Users](docs/screenshots/users.png)
 
-## Security Vulnerabilities
+### Data Ruangan
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+![Room](docs/screenshots/room.png)
 
-## License
+### Data Equipment
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+![Equipment](docs/screenshots/equipment.png)
+
+### Activity Log
+
+![Activity Log](docs/screenshots/activity-log.png)
+```
+
+---
+
+## ⚙️ Instalasi
+
+Clone repository:
+
+```bash
+git clone https://github.com/username/smart-hub-system.git
+```
+
+Masuk ke project:
+
+```bash
+cd smart-hub-system
+```
+
+Install dependency:
+
+```bash
+composer install
+
+npm install
+```
+
+Copy file environment:
+
+```bash
+cp .env.example .env
+```
+
+Generate key:
+
+```bash
+php artisan key:generate
+```
+
+Migrasi database:
+
+```bash
+php artisan migrate --seed
+```
+
+Jalankan project:
+
+```bash
+php artisan serve
+
+npm run dev
+```
+
+---
+
+## 🔗 API Endpoint
+
+### Authentication
+
+```http
+POST /api/v1/main/register
+POST /api/v1/main/login
+POST /api/v1/main/logout
+```
+
+### Equipment
+
+```http
+GET    /api/v1/main/equipment
+POST   /api/v1/main/equipment
+PUT    /api/v1/main/equipment/{id}
+DELETE /api/v1/main/equipment/{id}
+```
+
+### Room
+
+```http
+GET    /api/v1/main/room
+POST   /api/v1/main/room
+PUT    /api/v1/main/room/{id}
+DELETE /api/v1/main/room/{id}
+```
+
+### Booking
+
+```http
+GET    /api/v1/main/booking
+POST   /api/v1/main/booking
+POST   /api/v1/main/booking/{id}/check-in
+```
+
+---
+
+## 🔑 Login Demo
+
+### Admin
+
+Email:
+
+```text
+admin@test.com
+```
+
+Password:
+
+```text
+12345678
+```
+
+### User
+
+Email:
+
+```text
+user@test.com
+```
+
+Password:
+
+```text
+12345678
+```
+
+---
+
+© 2026 Smart Hub Management System
