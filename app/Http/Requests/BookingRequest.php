@@ -25,8 +25,8 @@ class BookingRequest extends FormRequest
         return [
             'user_id' => 'required|uuid|exists:users,id',
 
-            'start_time' => 'required|date|after_or_equal:now',
-            'end_time' => 'required|date|after:start_time',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date',
 
             'items' => 'required|array|min:1',
 

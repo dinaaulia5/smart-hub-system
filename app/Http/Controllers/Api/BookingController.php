@@ -16,6 +16,52 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BookingController extends Controller
 {
+    public function index(Request $request)
+    {
+        try {
+
+            $bookings = Booking::query()
+                ->with([
+                    'user:id,name,email',
+                    'items.bookable'
+                ])
+
+                ->where('user_id', auth()->id())
+
+                ->when($request->status, function ($query) use ($request) {
+                    $query->where('status', $request->status);
+                })
+
+                ->latest()
+                ->paginate($request->load ?? 10);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data booking berhasil diambil',
+
+                'pagination' => [
+                    'current_page' => $bookings->currentPage(),
+                    'from' => $bookings->firstItem(),
+                    'last_page' => $bookings->lastPage(),
+                    'per_page' => $bookings->perPage(),
+                    'to' => $bookings->lastItem(),
+                    'total' => $bookings->total(),
+                ],
+
+                'data' => $bookings->items()
+
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data booking',
+                'error' => config('app.debug')
+                    ? $e->getMessage()
+                    : null
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
     public function store(BookingRequest $request)
     {
         $data = $request->validated();

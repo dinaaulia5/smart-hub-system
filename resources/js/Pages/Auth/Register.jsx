@@ -37,8 +37,9 @@ export default function Register() {
                                     Selamat Datang
                                 </h1>
                                 <p className="text-sm text-muted-foreground">
-                                    Mulai Daftar Sekarang untuk memanage
-                                    keuangan anda
+                                    Masuk ke platform Smart Hub untuk mengelola
+                                    peminjaman ruang kerja dan peralatan studio
+                                    secara mandiri
                                 </p>
                                 {status && (
                                     <Alert variant="success" className="my-2">
@@ -126,7 +127,7 @@ export default function Register() {
                                     onChange={(e) =>
                                         setData(
                                             "password_confirmation",
-                                            e.target.value
+                                            e.target.value,
                                         )
                                     }
                                 />

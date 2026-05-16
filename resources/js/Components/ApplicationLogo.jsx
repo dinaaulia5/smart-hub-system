@@ -8,7 +8,7 @@ export default function ApplicationLogo({ url = "#" }) {
                 <IconCash className="text-white size-6" />
             </div>
             <span className="text-xl font-semibold leading-relaxed tracking-wide dark:text-emerald-500">
-                My Money{" "}
+                Smart Hub{" "}
                 <span className="text-lg text-emerald-500 dark:text-white">
                     +
                 </span>

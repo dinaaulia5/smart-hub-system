@@ -38,8 +38,9 @@ export default function Login({ status, canResetPassword }) {
                                     Selamat Datang
                                 </h1>
                                 <p className="text-sm text-muted-foreground">
-                                    Masuk ke platform My Money untuk memanage
-                                    keuangan anda
+                                    Masuk ke platform Smart Hub untuk mengelola
+                                    peminjaman ruang kerja dan peralatan studio
+                                    secara mandiri
                                 </p>
                                 {status && (
                                     <Alert variant="success" className="my-2">
